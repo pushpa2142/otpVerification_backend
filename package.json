@@ -1,0 +1,37 @@
+{
+  "name": "phone-verify-backend",
+  "version": "1.0.0",
+  "description": "Phone number verification API with JWT auth",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "test": "jest"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.1693.0",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.6",
+    "dotenv": "^16.6.1",
+    "express": "^4.22.2",
+    "express-rate-limit": "^7.1.5",
+    "express-validator": "^7.0.1",
+    "helmet": "^7.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongodb": "4.1",
+    "mongoose": "^8.23.1",
+    "morgan": "^1.10.0",
+    "serverless-http": "^4.0.0",
+    "twilio": "^4.19.3",
+    "web-streams-polyfill": "^4.2.0",
+    "winston": "^3.11.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2",
+    "serverless": "^3.40.0",
+    "serverless-offline": "^12.0.4"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}

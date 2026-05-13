@@ -1,0 +1,14 @@
+[2026-05-12 18:00:39] error: Error: listen EADDRINUSE: address already in use :::3000
+    at Server.setupListenHandle [as _listen2] (node:net:1908:16)
+    at listenInCluster (node:net:1965:12)
+    at Server.listen (node:net:2067:7)
+    at Function.listen (D:\Pushpa\SmsBackend\phone-verify\backend\node_modules\express\lib\application.js:635:24)
+    at startServer (D:\Pushpa\SmsBackend\phone-verify\backend\src\server.js:30:24)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+[2026-05-12 18:05:35] error: Error: listen EADDRINUSE: address already in use :::3000
+    at Server.setupListenHandle [as _listen2] (node:net:1908:16)
+    at listenInCluster (node:net:1965:12)
+    at Server.listen (node:net:2067:7)
+    at Function.listen (D:\Pushpa\SmsBackend\phone-verify\backend\node_modules\express\lib\application.js:635:24)
+    at startServer (D:\Pushpa\SmsBackend\phone-verify\backend\src\server.js:30:24)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
