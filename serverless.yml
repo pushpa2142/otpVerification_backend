@@ -1,0 +1,170 @@
+# # serverless.yml
+# # Deploy with: npx serverless deploy --stage prod
+
+# service: phone-verify-api
+
+# frameworkVersion: '3'
+
+# provider:
+#   name: aws
+#   runtime: nodejs18.x          # Node 18 LTS on Lambda
+#   region: us-east-1            # Change to your preferred region
+#   stage: ${opt:stage, 'dev'}
+#   memorySize: 256
+#   timeout: 29                  # API Gateway max is 30s
+
+#   # Environment variables injected into Lambda
+#   environment:
+#     NODE_ENV: production
+#     MONGODB_URI: ${env:MONGODB_URI}
+#     JWT_SECRET: ${env:JWT_SECRET}
+#     JWT_EXPIRES_IN: 7d
+#     TWILIO_ACCOUNT_SID: ${env:TWILIO_ACCOUNT_SID}
+#     TWILIO_AUTH_TOKEN: ${env:TWILIO_AUTH_TOKEN}
+#     TWILIO_PHONE_NUMBER: ${env:TWILIO_PHONE_NUMBER}
+#     OTP_EXPIRY_MINUTES: '2'
+#     OTP_LENGTH: '6'
+#     FRONTEND_URL: ${env:FRONTEND_URL, 'http://localhost:4200'}
+
+#   # IAM permissions (add more if you use AWS services)
+#   iam:
+#     role:
+#       statements:
+#         - Effect: Allow
+#           Action:
+#             - logs:CreateLogGroup
+#             - logs:CreateLogStream
+#             - logs:PutLogEvents
+#           Resource: 'arn:aws:logs:*:*:*'
+
+# functions:
+#   api:
+#     handler: lambda.handler
+#     description: Phone Verification API — Express on Lambda
+#     events:
+#       - http:
+#           path: /              # Catch-all root
+#           method: ANY
+#           cors:
+#             origins:
+#               - ${env:FRONTEND_URL, 'http://localhost:4200'}
+#             headers:
+#               - Content-Type
+#               - Authorization
+#               - X-Requested-With
+#             allowCredentials: true
+#       - http:
+#           path: /{proxy+}      # Catch-all proxy
+#           method: ANY
+#           cors:
+#             origins:
+#               - ${env:FRONTEND_URL, 'http://localhost:4200'}
+#             headers:
+#               - Content-Type
+#               - Authorization
+#               - X-Requested-With
+#             allowCredentials: true
+
+# # Exclude unnecessary files from the Lambda bundle
+# package:
+#   patterns:
+#     - '!.git/**'
+#     - '!.env*'
+#     - '!*.md'
+#     - '!logs/**'
+#     - '!test/**'
+#     - '!coverage/**'
+#     - '!node_modules/.cache/**'
+
+# plugins:
+#   - serverless-offline           # Local testing: npx serverless offline
+
+# custom:
+#   serverless-offline:
+#     httpPort: 3000
+#     noPrependStageInUrl: true
+service: phone-verify-api
+
+frameworkVersion: '3'
+useDotenv: true
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: ap-south-1
+  stage: ${opt:stage, 'dev'}
+
+  memorySize: 512
+  timeout: 29
+
+  environment:
+    NODE_ENV: production
+
+    MONGODB_URI: ${env:MONGODB_URI}
+
+    JWT_SECRET: ${env:JWT_SECRET}
+    JWT_EXPIRES_IN: ${env:JWT_EXPIRES_IN}
+
+    TWILIO_ACCOUNT_SID: ${env:TWILIO_ACCOUNT_SID}
+    TWILIO_AUTH_TOKEN: ${env:TWILIO_AUTH_TOKEN}
+    TWILIO_PHONE_NUMBER: ${env:TWILIO_PHONE_NUMBER}
+
+    OTP_EXPIRY_MINUTES: ${env:OTP_EXPIRY_MINUTES}
+    OTP_LENGTH: ${env:OTP_LENGTH}
+
+    FRONTEND_URL: ${env:FRONTEND_URL}
+  httpApi:
+    cors:
+      allowedOrigins:
+        - http://localhost:4200
+      allowedHeaders:
+        - Content-Type
+        - Authorization
+        - X-Requested-With
+      allowedMethods:
+        - GET
+        - POST
+        - PUT
+        - PATCH
+        - DELETE
+        - OPTIONS
+      allowCredentials: true
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - logs:CreateLogGroup
+            - logs:CreateLogStream
+            - logs:PutLogEvents
+          Resource: "*"
+
+functions:
+  api:
+    handler: lambda.handler
+
+    events:
+      - httpApi:
+          path: /
+          method: ANY
+
+      - httpApi:
+          path: /{proxy+}
+          method: ANY
+
+package:
+  individually: false
+
+  patterns:
+    - '!logs/**'
+    - '!coverage/**'
+    - '!test/**'
+    - '!.git/**'
+    - '!.env'
+    - '!README.md'
+
+plugins:
+  - serverless-offline
+
+custom:
+  serverless-offline:
+    httpPort: 3000
